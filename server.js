@@ -18,9 +18,17 @@ db.on("error", function(error) {
   console.log("Database Error:", error);
 });
 
-// Main route
-app.get("/", function(req, res) {
-  res.send("Hello world");
+// // Main route
+// app.get("/", function(req, res) {
+//   res.send("Hello world");
+// });
+
+// Main Route (first visit to the site)
+app.get('/', function (req, res){
+
+  // Scrape data
+  res.redirect('/scrape');
+
 });
 
 //Retrieve all of the data from scrapedData as JSON
@@ -36,9 +44,9 @@ app.get("/all", function(req, res) {
 
         // Select each element in the HTML body from which you want information.
         $("article.item.has-image").each(function(i, element) {
-        var link = $(element).find("h2").find("a").attr("href");
+        var link = $(element).find("h2").find("a").attr("href").trim();
         var title = $(element).children().text().trim();
-        var image = $(element).find("a").find("img").attr("src");
+        var image = $(element).find("a").find("img").attr("src").trim();
         var summary = $(element).find("p.teaser").text().trim();
 
         // Save these results in an object and push into the results array
@@ -66,8 +74,8 @@ app.get("/scrape", function(req, res) {
 
         $("article.item.has-image").each(function(i, element) {
             var link = $(element).find("h2").find("a").attr("href").trim();
-            var title = $(element).children().text();
-            var image = $(element).find("a").find("img").attr("src");
+            var title = $(element).children().text().trim();
+            var image = $(element).find("a").find("img").attr("src").trim();
             var summary = $(element).find("p.teaser").text().trim();
 
             if (title && link && image && summary) {
