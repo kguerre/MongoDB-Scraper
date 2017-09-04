@@ -16,20 +16,10 @@ request("http://www.npr.org/sections/music-news/", function(
 
   // Select each element in the HTML body from which you want information.
   $("article.item.has-image").each(function(i, element) {
-    var link = $(element)
-      .find("h2")
-      .find("a")
-      .attr("href");
-    var title = $(element)
-      .children()
-      .text();
-    var image = $(element)
-      .find("a")
-      .find("img")
-      .attr("src");
-    var summary = $(element)
-      .find("p.teaser")
-      .text();
+    var link = $(element).find("h2").find("a").attr("href");
+    var title = $(element).children().text();
+    var image = $(element).find("a").find("img").attr("src");
+    var summary = $(element).find("p.teaser").text();
 
     // Save these results in an object and push into the results array
     results.push({
