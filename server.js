@@ -1,98 +1,49 @@
 // Dependencies
 var express = require("express");
-var mongojs = require("mongojs");
-// Require request and cheerio. This makes the scraping possible
+var bodyParser = require("body-parser");
+var logger = require("morgan");
+var mongoose = require("mongoose");
+// Requiring our Note and Article models
+var Comment = require("./models/comment.js");
+var Article = require("./models/article.js");
+// Our scraping tools
 var request = require("request");
 var cheerio = require("cheerio");
+// Set mongoose to leverage built in JavaScript ES6 Promises
+mongoose.Promise = Promise;
+
 
 // Initialize Express
 var app = express();
 
-// Database configuration
-var databaseUrl = "newsScraper";
-var collections = ["scrapedData"];
+// Use morgan and body parser with our app
+app.use(logger("dev"));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
-// Hook mongojs configuration to the db variable
-var db = mongojs(databaseUrl, collections);
+// Make public a static dir
+app.use(express.static("public"));
+
+// Database configuration with mongoose
+mongoose.connect("mongodb://localhost/musicNews");
+var db = mongoose.connection;
+
+// Show any mongoose errors
 db.on("error", function(error) {
-  console.log("Database Error:", error);
+  console.log("Mongoose Error: ", error);
 });
 
-// // Main route
-// app.get("/", function(req, res) {
-//   res.send("Hello world");
-// });
-
-// Main Route (first visit to the site)
-app.get('/', function (req, res){
-
-  // Scrape data
-  res.redirect('/scrape');
-
+// Once logged in to the db through mongoose, log a success message
+db.once("open", function() {
+  console.log("Mongoose connection successful.");
 });
 
-//Retrieve all of the data from scrapedData as JSON
-app.get("/all", function(req, res) {
-
-    request("http://www.npr.org/sections/music-news/", function(error, response, html) {
-
-        // Load the HTML into cheerio and save it to a variable
-        var $ = cheerio.load(html);
-
-        // An empty array to save the data
-        var results = [];
-
-        // Select each element in the HTML body from which you want information.
-        $("article.item.has-image").each(function(i, element) {
-        var link = $(element).find("h2").find("a").attr("href").trim();
-        var title = $(element).children().text().trim();
-        var image = $(element).find("a").find("img").attr("src").trim();
-        var summary = $(element).find("p.teaser").text().trim();
-
-        // Save these results in an object and push into the results array
-        results.push({
-        title: title,
-        link: link,
-        image: image,
-        summary: summary
-        });
-    });
-  // Log the results once you've looped through each of the elements found with cheerio
-  res.json(results);
- });
-});
-
-
-//The server will scrape data from the site and save it to MongoDB
-app.get("/scrape", function(req, res) {
-
-    request("http://www.npr.org/sections/music-news/", function(error, response, html) {
-
-        var $ = cheerio.load(html);
-
-        var results = [];
-
-        $("article.item.has-image").each(function(i, element) {
-            var link = $(element).find("h2").find("a").attr("href").trim();
-            var title = $(element).children().text().trim();
-            var image = $(element).find("a").find("img").attr("src").trim();
-            var summary = $(element).find("p.teaser").text().trim();
-
-            if (title && link && image && summary) {
-            db.scrapedData.insert({ 
-                title: title, 
-                link: link, 
-                image: image, 
-                summary: summary });
-            }
-    // Log the results once you've looped through each of the elements found with cheerio
-    console.log("Scraped");
-  });
-});
-});
+// Import Routes/Controller
+var router = require('./controllers/controller.js');
+app.use('/', router);
 
 // Listen on port 3000
 app.listen(3000, function() {
   console.log("App running on port 3000!");
 });
-
