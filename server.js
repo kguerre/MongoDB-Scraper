@@ -3,6 +3,8 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var logger = require("morgan");
 var mongoose = require("mongoose");
+var hbs = require('handlebars');
+var exphbs = require("express-handlebars");
 // Requiring our Note and Article models
 var Comment = require("./models/comment.js");
 var Article = require("./models/article.js");
@@ -24,6 +26,10 @@ app.use(bodyParser.urlencoded({
 
 // Make public a static dir
 app.use(express.static("public"));
+
+//Handlebars
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
 
 // Database configuration with mongoose
 mongoose.connect("mongodb://localhost/musicNews");

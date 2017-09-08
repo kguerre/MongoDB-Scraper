@@ -23,7 +23,7 @@ router.get('/', function (req, res){
 });
 
 // A GET request to scrape the NPR website
-router.get("/scrape", function(req, res) {
+router.get('/scrape', function(req, res) {
   // First, we grab the body of the html with request
   request("http://www.npr.org/sections/music-news/", function(error, response, html) {
 
@@ -61,20 +61,35 @@ router.get("/scrape", function(req, res) {
     });
   });
   // Tell the browser that we finished scraping the text
-  res.send("Scrape Complete");
+  // res.send("Scrape Complete");
+  res.render('index');
 });
 
 // This will get the articles we scraped from the mongoDB
+// router.get("/articles", function(req, res) {
+//   // Grab every doc in the Articles array
+//   Article.find({}, function(error, doc) {
+//     // Log any errors
+//     if (error) {
+//       console.log(error);
+//     }
+//     // Or send the doc to the browser as a json object
+//     else {
+//       res.json(doc);
+//     }
+//   });
+// });
+
 router.get("/articles", function(req, res) {
-  // Grab every doc in the Articles array
-  Article.find({}, function(error, doc) {
-    // Log any errors
-    if (error) {
-      console.log(error);
+  Article.find().sort({id:-1})
+  .populate('comments')
+  .exec(function(err, doc) {
+    if (err) {
+      console.log(err);
     }
-    // Or send the doc to the browser as a json object
     else {
-      res.json(doc);
+      var hbsObject = {article: doc}
+      res.render('index', hbsObject);
     }
   });
 });
@@ -93,7 +108,9 @@ router.get("/articles/:id", function(req, res) {
     }
     // Otherwise, send the doc to the browser as a json object
     else {
-      res.json(doc);
+      // res.json(doc);
+      res.send(doc);
+      // res.render('index');
     }
   });
 });
