@@ -7,10 +7,10 @@
 
 <div class="ui container">
 <!--HEADER-->
-<h2 class="ui aligned center header">
+<h2 class="ui aligned center icon header">
     <i class="music icon"></i>
-    <div class="aligned center content">
-        All Ears
+    <div class="content">
+        <p>All Ears</p>
         <div class="sub header">Latest music news in one place</div>
     </div>
 </h2>
@@ -33,32 +33,29 @@
             <td><a href="{{this.link}}"><i class="newspaper icon"></i>View Article</a></td>
         </tr>
         <tr>
-            <td><i class="write icon"></i>Add a Comment</td>
-        </tr>
-        <tr>
-            <td><i class="comments outline icon"></i>View Comments</td>
-        </tr>
+            <td>
+                <button class="ui button" id="addComment">
+                    <i class="write icon"></i>Add a Comment
+                </button>
+                <button class="ui button" id="viewComments">
+                    <i class="comments outline icon"></i>View Comments
+                </button>
+            </td>
     </tbody>
 </table>
+<div class="ui modal">
+    <div class="ui form">
+        <div class="field">
+            <label>Short Text</label>
+            <textarea rows="4"></textarea>
+        </div>
+    </div>
+    <button class="submit">Save Comment</button>
+</div>
 
 <br>
 
 {{/each}}
-
-
-{{!-- <table class="ui selectable table">
-    <thead>
-        <tr>
-            <th>Stuff</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <a href="#">
-                <td>More Stuff</td>
-            </a>
-    </tbody>
-</table> --}}
 
 </div>
 

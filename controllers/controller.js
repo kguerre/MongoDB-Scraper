@@ -18,7 +18,7 @@ var Article = require('../models/article.js');
 router.get('/', function (req, res){
 
   // Scrape data
-  res.redirect("/articles");
+  res.redirect('/scrape');
 
 });
 
