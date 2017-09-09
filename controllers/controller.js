@@ -18,7 +18,7 @@ var Article = require('../models/article.js');
 router.get('/', function (req, res){
 
   // Scrape data
-  res.redirect('/scrape');
+  res.redirect("/articles");
 
 });
 
@@ -38,10 +38,8 @@ router.get('/scrape', function(req, res) {
 
       // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this).children("h2").text();
-    //   result.link = $(this).children("a").attr("href");
       result.link = $(this).find("h2").find("a").attr("href");
       result.summary = $(this).children("p.teaser").text();
-    //   result.image = $(this).children("a").children("img").attr("src");
 
       // Using our Article model, create a new entry
       // This effectively passes the result object to the entry (and the title and link)
@@ -60,36 +58,21 @@ router.get('/scrape', function(req, res) {
       });
     });
   });
-  // Tell the browser that we finished scraping the text
-  // res.send("Scrape Complete");
-  res.render('index');
+  res.redirect("/articles");
 });
 
-// This will get the articles we scraped from the mongoDB
-// router.get("/articles", function(req, res) {
-//   // Grab every doc in the Articles array
-//   Article.find({}, function(error, doc) {
-//     // Log any errors
-//     if (error) {
-//       console.log(error);
-//     }
-//     // Or send the doc to the browser as a json object
-//     else {
-//       res.json(doc);
-//     }
-//   });
-// });
-
+//Get articles scraped from mongoDB
 router.get("/articles", function(req, res) {
-  Article.find().sort({id:-1})
-  .populate('comments')
-  .exec(function(err, doc) {
+  //Grab every doc in the Articles array
+  Article.find({}, function(err, doc) {
+    //Log any errors
     if (err) {
       console.log(err);
     }
+    //or store doc in hbsObject and render to index
     else {
-      var hbsObject = {article: doc}
-      res.render('index', hbsObject);
+      var hbsObject = {article: doc};
+      return res.render('index', hbsObject);
     }
   });
 });
