@@ -1,15 +1,19 @@
-// $(document).ready(function(){
-
-
-
-// });
-
-// $(document).on("click", "button#addComment", function() {
-//   $("div.ui.modal").modal("show");
-// });
-
 $(document).ready(function() {
   $("#addComment").click(function() {
-    $(".ui.modal").modal("show");
+    $("#comment").modal("show");
   });
 });
+
+$(document).ready(function() {
+  $("#viewComments").click(function() {
+    $("#view").modal("show");
+  });
+});
+
+function hideModal() {
+  $(".ui.modal").modal("hide");
+}
+
+$(document).on("click", "#save", hideModal);
+
+

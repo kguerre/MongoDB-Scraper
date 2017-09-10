@@ -77,35 +77,34 @@ router.get("/articles", function(req, res) {
   });
 });
 
-// Grab an article by it's ObjectId
-router.get("/articles/:id", function(req, res) {
-  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-  Article.findOne({ "_id": req.params.id })
-  // ..and populate all of the notes associated with it
-  .populate("comment")
-  // now, execute our query
-  .exec(function(error, doc) {
-    // Log any errors
-    if (error) {
-      console.log(error);
-    }
-    // Otherwise, send the doc to the browser as a json object
-    else {
-      // res.json(doc);
-      res.send(doc);
-      // res.render('index');
-    }
-  });
-});
+// // Grab an article by it's ObjectId
+// router.get("/articles/:id", function(req, res) {
+//   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
+//   Article.findOne({ "_id": req.params.id })
+//   // ..and populate all of the notes associated with it
+//   .populate("comment")
+//   // now, execute our query
+//   .exec(function(error, doc) {
+//     // Log any errors
+//     if (error) {
+//       console.log(error);
+//     }
+//     // Otherwise, send the doc to the browser as a json object
+//     else {
+//       // res.json(doc);
+//       res.send(doc);
+//       // res.render('index');
+//     }
+//   });
+// });
 
-
-// Create a new note or replace an existing note
-router.post("/articles/:id", function(req, res) {
+// Create a new note or replace an existing note API
+router.post("/add/comment/:id", function(req, res) {
   // Create a new note and pass the req.body to the entry
-  var newNote = new Note(req.body);
+  var newComment = new Comment(req.body);
 
   // And save the new note the db
-  newNote.save(function(error, doc) {
+  newComment.save(function(error, doc) {
     // Log any errors
     if (error) {
       console.log(error);
@@ -123,8 +122,26 @@ router.post("/articles/:id", function(req, res) {
         else {
           // Or send the document to the browser
           res.send(doc);
+          // res.render("index");
         }
       });
+    }
+  });
+});
+
+// Delete a Comment Route
+router.post("/delete/comment/:id", function (req, res){
+  // Collect comment id
+  var commentId = req.params.id;
+  // Find and Delete the Comment using the Id
+  Comment.findByIdAndRemove(commentId, function (err, todo) {  
+    if (err) {
+      console.log(err);
+    } 
+    else {
+      // Send Success Header
+      res.sendStatus(200);
+      // res.render("index");
     }
   });
 });

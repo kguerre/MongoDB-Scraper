@@ -11,13 +11,12 @@
     <i class="music icon"></i>
     <div class="content">
         <p>All Ears</p>
-        <div class="sub header">Latest music news in one place</div>
+        <div class="sub header"><p id="subHeader">Latest music news in one place</p></div>
     </div>
 </h2>
 
 <!--ARTICLES-->
 {{#each article}}
-
 
 <table class="ui selectable table">
     <thead>
@@ -34,26 +33,57 @@
         </tr>
         <tr>
             <td>
-                <button class="ui button" id="addComment">
-                    <i class="write icon"></i>Add a Comment
-                </button>
-                <button class="ui button" id="viewComments">
-                    <i class="comments outline icon"></i>View Comments
-                </button>
+                <div id="addComment" class="ui basic buttons">
+                    <div class="ui right button">
+                        <i class="write icon"></i>Add a Comment
+                    </div>
+                </div>
+                <div id="viewComments" class="ui basic buttons">
+                    <div class="ui right button">
+                        <i class="comments outline icon"></i>View Comments
+                    </div>
+                </div>
+                <div id="add" class="ui basic buttons">
+                    <div id="add" class="ui right button">
+                        <i class="newspaper icon"></i>Save Article
+                    </div>
+                </div>
             </td>
     </tbody>
 </table>
-<div class="ui modal">
-    <div class="ui form">
+<br>
+
+<!--COMMENT MODAL-->
+<div class="ui modal" id="comment">
+    <div class="ui form" id="form-add-{{_id}}" action="add/comment/{{_id}}" method="post">
         <div class="field">
             <label>Short Text</label>
-            <textarea rows="4"></textarea>
+            <textarea id="bodyInput" rows="4"></textarea>
         </div>
     </div>
-    <button class="submit">Save Comment</button>
+    <div id="save" class="ui basic buttons" data-id="{{_id}}" type="submit" value="Submit">
+        <div id="save" class="ui right button">
+            Save Comment
+        </div>
+    </div>
 </div>
 
-<br>
+<!--VIEW COMMENTS MODAL-->
+<div class="ui modal" id="view">
+    {{#each comments}}
+    <div class="header">{{title}}</div>
+    <div class="content">
+        <p>{{comment}}</p>
+    </div>
+    <div id="delete" class="ui basic buttons" id="form-delete-{{_id}}" action="remove/comment/{{_id}}" method="post">
+        <div id="delete" class="ui right button">
+            Delete Comment
+        </div>
+    </div>
+     {{/each}}
+</div>
+
+
 
 {{/each}}
 
