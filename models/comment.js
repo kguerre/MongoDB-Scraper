@@ -5,14 +5,8 @@ var Schema = mongoose.Schema;
 
 // Create the Note schema
 var CommentSchema = new Schema({
-  // // Just a string
-  // title: {
-  //   type: String
-  // },
   // Just a string
-  body: {
-    type: String
-  }
+  body: String
 });
 
 // Create the Note model with the NoteSchema

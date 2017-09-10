@@ -61,7 +61,7 @@ router.get('/scrape', function(req, res) {
   res.redirect("/articles");
 });
 
-//Get articles scraped from mongoDB
+// //Get articles scraped from mongoDB
 router.get("/articles", function(req, res) {
   //Grab every doc in the Articles array
   Article.find({}, function(err, doc) {
@@ -77,28 +77,22 @@ router.get("/articles", function(req, res) {
   });
 });
 
-// // Grab an article by it's ObjectId
-// router.get("/articles/:id", function(req, res) {
-//   // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-//   Article.findOne({ "_id": req.params.id })
-//   // ..and populate all of the notes associated with it
-//   .populate("comment")
-//   // now, execute our query
-//   .exec(function(error, doc) {
+// // This will get the articles we scraped from the mongoDB
+// router.get("/articles", function(req, res) {
+//   // Grab every doc in the Articles array
+//   Article.find({}, function(error, doc) {
 //     // Log any errors
 //     if (error) {
 //       console.log(error);
 //     }
-//     // Otherwise, send the doc to the browser as a json object
+//     // Or send the doc to the browser as a json object
 //     else {
-//       // res.json(doc);
-//       res.send(doc);
-//       // res.render('index');
+//       res.json(doc);
 //     }
 //   });
 // });
 
-// Create a new note or replace an existing note API
+// Create a new note or replace an existing note
 router.post("/add/comment/:id", function(req, res) {
   // Create a new note and pass the req.body to the entry
   var newComment = new Comment(req.body);
@@ -112,7 +106,7 @@ router.post("/add/comment/:id", function(req, res) {
     // Otherwise
     else {
       // Use the article id to find and update it's note
-      Article.findOneAndUpdate({ "_id": req.params.id }, { "comment": doc._id })
+      Article.findOneAndUpdate({ "_id": req.params.id }, { "note": doc._id })
       // Execute the above query
       .exec(function(err, doc) {
         // Log any errors
@@ -121,8 +115,8 @@ router.post("/add/comment/:id", function(req, res) {
         }
         else {
           // Or send the document to the browser
+          console.log("Check the comments");
           res.send(doc);
-          // res.render("index");
         }
       });
     }

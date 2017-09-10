@@ -1,8 +1,8 @@
 <!--MENU-->
 <div class="ui inverted menu">
     <a class="active item">Home</a>
-    <a class="item">Scrape New Articles</a>
-    <a class="item">Saved Articles</a>
+    {{!-- <a class="item">Scrape New Articles</a>
+    <a class="item">Saved Articles</a> --}}
 </div>
 
 <div class="ui container">
@@ -34,20 +34,20 @@
         <tr>
             <td>
                 <div id="addComment" class="ui basic buttons">
-                    <div class="ui right button">
+                    <div id="addComment" class="ui right button">
                         <i class="write icon"></i>Add a Comment
                     </div>
                 </div>
                 <div id="viewComments" class="ui basic buttons">
-                    <div class="ui right button">
+                    <div id="viewComments" class="ui right button">
                         <i class="comments outline icon"></i>View Comments
                     </div>
                 </div>
-                <div id="add" class="ui basic buttons">
+                {{!-- <div id="add" class="ui basic buttons">
                     <div id="add" class="ui right button">
                         <i class="newspaper icon"></i>Save Article
                     </div>
-                </div>
+                </div> --}}
             </td>
     </tbody>
 </table>
@@ -61,8 +61,8 @@
             <textarea id="bodyInput" rows="4"></textarea>
         </div>
     </div>
-    <div id="save" class="ui basic buttons" data-id="{{_id}}" type="submit" value="Submit">
-        <div id="save" class="ui right button">
+    <div id="save" class="ui submit button" data-id="{{_id}}" type="submit" value="Submit">
+        <div id="save" class="ui small right button">
             Save Comment
         </div>
     </div>
@@ -70,23 +70,22 @@
 
 <!--VIEW COMMENTS MODAL-->
 <div class="ui modal" id="view">
-    {{#each comments}}
-    <div class="header">{{title}}</div>
-    <div class="content">
-        <p>{{comment}}</p>
+    <i class="close icon"></i>
+    <div class="header">
+        {{this.title}}
     </div>
-    <div id="delete" class="ui basic buttons" id="form-delete-{{_id}}" action="remove/comment/{{_id}}" method="post">
-        <div id="delete" class="ui right button">
+    <div class="content">
+        <div class="description">
+            <p>{{this.comment}}</p>
+        </div>
+    </div>
+    <div class="ui submit button" id="form-delete-{{_id}}" action="delete/comment/{{_id}}" method="post">
+        <div id="delete" class="ui small right button">
             Delete Comment
         </div>
     </div>
-     {{/each}}
 </div>
-
-
 
 {{/each}}
 
 </div>
-
-
