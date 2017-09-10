@@ -68,12 +68,14 @@
     </div>
 </div>
 
+
+
 <!--VIEW COMMENTS MODAL-->
 <div class="ui modal" id="view">
     <i class="close icon"></i>
-    <div class="header">
-        {{this.title}}
-    </div>
+     {{!-- {{#if comment}} --}}
+    <div class="header">{{title}}</div>
+     {{#each comments}}
     <div class="content">
         <div class="description">
             <p>{{this.comment}}</p>
@@ -84,7 +86,10 @@
             Delete Comment
         </div>
     </div>
+     {{/each}}
+     {{!-- {{/if}} --}}
 </div>
+
 
 {{/each}}
 

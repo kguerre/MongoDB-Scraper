@@ -116,6 +116,7 @@ router.post("/add/comment/:id", function(req, res) {
         else {
           // Or send the document to the browser
           console.log("Check the comments");
+          console.log(doc);
           res.send(doc);
         }
       });

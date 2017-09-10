@@ -17,7 +17,7 @@ function hideModal() {
 $(document).on("click", "#save", hideModal);
 
 // Click Listener for FORM SUBMISSION to ADD a comment
-  $('#save-comment').on('click', function(){
+  $('#save').on('click', function(){
    
     // Get _id of comment to be deleted
     var articleId = $(this).data("id");
